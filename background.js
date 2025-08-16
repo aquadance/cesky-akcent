@@ -23,6 +23,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 // Асинхронная функция для отправки текста в Google и получения аудио
 async function speakText(text) {
+  // Сначала получаем настройки пользователя из хранилища
+  const settings = await chrome.storage.sync.get({
+      voice: 'cs-CZ-Wavenet-A', // Голос по умолчанию
+      speed: 1                  // Скорость по умолчанию
+  });
+
   try {
     // Отправляем запрос (fetch) в Google Cloud API
     const response = await fetch(API_URL, {
@@ -32,8 +38,13 @@ async function speakText(text) {
       },
       body: JSON.stringify({
         input: { text: text },
-        voice: { languageCode: 'cs-CZ', name: 'cs-CZ-Wavenet-A' },
-        audioConfig: { audioEncoding: 'MP3' }
+        // Используем голос, полученный из настроек
+        voice: { languageCode: 'cs-CZ', name: settings.voice },
+        // Используем скорость, полученную из настроек
+        audioConfig: { 
+            audioEncoding: 'MP3',
+            speakingRate: settings.speed
+        }
       })
     });
 
@@ -45,7 +56,6 @@ async function speakText(text) {
 
     const data = await response.json();
     
-    // Получаем аудиоданные и передаем их на воспроизведение
     const audioContent = data.audioContent;
     await playAudio(audioContent);
 

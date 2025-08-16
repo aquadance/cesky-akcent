@@ -1,54 +1,164 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    width: 250px;
-    margin: 0;
-    background-color: #f9f9f9;
+/* --- Глобальные стили --- */
+:root {
+    --primary-color: #d32f2f; /* Основной красный цвет */
+    --background-color: #f4f5f7;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --text-color-light: #666666;
+    --border-color: #e1e4e8;
+    --accent-blue: #007bff;
 }
 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    width: 280px;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* --- Шапка --- */
 .header {
-    background-color: #d32f2f;
+    background-color: var(--primary-color);
     color: white;
-    padding: 12px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .header img {
     width: 24px;
     height: 24px;
-    margin-right: 10px;
+    margin-right: 12px;
 }
 
 .header h1 {
     font-size: 16px;
     margin: 0;
+    font-weight: 600;
 }
 
+/* --- Основной контент --- */
 .content {
-    padding: 15px;
+    padding: 16px;
+}
+
+.content h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-color-light);
+    margin: 0 0 8px 0;
+}
+
+/* --- Стиль "Карточки" для настроек --- */
+.card {
+    background-color: var(--card-background);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 14px;
-    color: #333;
-    line-height: 1.5;
+    gap: 16px; /* <-- ДОБАВЛЕНО РАССТОЯНИЕ */
 }
 
-.content p {
-    margin: 0 0 10px 0;
+.divider {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 16px 0;
 }
 
+/* --- Стили для элементов управления --- */
+label {
+    font-weight: 500;
+    white-space: nowrap; /* Запрещаем перенос строки для метки */
+}
 
-footer {
+select {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    background-color: #fff;
+    width: 100%; /* Заставляем селект занимать доступное место */
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Заставляем контейнер слайдера занимать доступное место */
+}
+
+#speed-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color-light);
+    margin-left: 12px;
+    width: 40px; 
+    text-align: right;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #e1e4e8;
+    height: 4px;
+    border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    cursor: pointer;
+    margin-top: -6px; 
+}
+
+/* --- Кнопка --- */
+#save-button {
+    width: 100%;
+    background-color: var(--accent-blue);
+    color: white;
+    border: none;
     padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#save-button:hover {
+    background-color: #0069d9;
+}
+
+/* --- Сообщение о статусе --- */
+#status-message {
+    display: block;
     text-align: center;
-    background-color: #f0f0f0;
-    border-top: 1px solid #ddd;
-}
-
-footer a {
-    font-size: 10px;
-    color: #888;
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #28a745; 
+    font-weight: 500;
 }
