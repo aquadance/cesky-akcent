@@ -1,4 +1,3 @@
-// Этот скрипт теперь слушает ТОЛЬКО команду 'play'
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.target === 'offscreen' && msg.type === 'play') {
     const audioPlayer = document.querySelector('#player');

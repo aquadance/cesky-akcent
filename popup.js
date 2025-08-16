@@ -8,83 +8,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.getElementById('status-message');
     const dictionaryContent = document.getElementById('dictionary-content');
     const stopButton = document.getElementById('stop-button');
-
-    // Логика переключения вкладок
+  
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            button.classList.add('active');
-            document.getElementById(button.dataset.tab).classList.add('active');
-        });
+      button.addEventListener('click', () => {
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+  
+        button.classList.add('active');
+        document.getElementById(button.dataset.tab).classList.add('active');
+      });
     });
-
-    // --- Логика словаря ---
+  
     function displayDictionary() {
-        chrome.storage.sync.get({ dictionary: [] }, (items) => {
-            const dictionary = items.dictionary;
-            dictionaryContent.innerHTML = ''; 
-            if (dictionary.length === 0) {
-                dictionaryContent.innerHTML = '<p class="empty-message">Ваш словарь пока пуст.</p>';
-                return;
-            }
-            const list = document.createElement('ul');
-            list.className = 'dictionary-list';
-            dictionary.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <div class="word-pair">
-                        <span class="original-word">${item.original}</span>
-                        <span class="translation">${item.translation}</span>
-                    </div>
-                    <button class="delete-btn" data-word="${item.original}" title="Удалить слово">×</button>
-                `;
-                list.appendChild(listItem);
-            });
-            dictionaryContent.appendChild(list);
-        });
-    }
-    async function deleteWord(wordToDelete) {
-        const result = await chrome.storage.sync.get({ dictionary: [] });
-        let dictionary = result.dictionary;
-        dictionary = dictionary.filter(item => item.original !== wordToDelete);
-        await chrome.storage.sync.set({ dictionary: dictionary });
-        displayDictionary();
-    }
-    dictionaryContent.addEventListener('click', (event) => {
-        if (event.target.classList.contains('delete-btn')) {
-            deleteWord(event.target.dataset.word);
+      chrome.storage.sync.get({ dictionary: [] }, (items) => {
+        const dictionary = items.dictionary;
+        dictionaryContent.innerHTML = '';
+  
+        if (dictionary.length === 0) {
+          dictionaryContent.innerHTML = '<p class="empty-message">Ваш словарь пока пуст.</p>';
+          return;
         }
+  
+        const list = document.createElement('ul');
+        list.className = 'dictionary-list';
+        dictionary.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+            <div class="word-pair">
+              <span class="original-word">${item.original}</span>
+              <span class="translation">${item.translation}</span>
+            </div>
+            <button class="delete-btn" data-word="${item.original}" title="Удалить слово">×</button>
+          `;
+          list.appendChild(listItem);
+        });
+        dictionaryContent.appendChild(list);
+      });
+    }
+  
+    async function deleteWord(wordToDelete) {
+      const result = await chrome.storage.sync.get({ dictionary: [] });
+      let dictionary = result.dictionary;
+      dictionary = dictionary.filter(item => item.original !== wordToDelete);
+      await chrome.storage.sync.set({ dictionary: dictionary });
+      displayDictionary();
+    }
+  
+    dictionaryContent.addEventListener('click', (event) => {
+      if (event.target.classList.contains('delete-btn')) {
+        deleteWord(event.target.dataset.word);
+      }
     });
-
-    // --- Логика настроек ---
+  
     function loadSettings() {
-        chrome.storage.sync.get({ voice: 'cs-CZ-Wavenet-A', speed: 1 }, (items) => {
-            voiceSelect.value = items.voice;
-            speedSlider.value = items.speed;
-            speedValue.textContent = `${parseFloat(items.speed).toFixed(2)}x`;
-        });
+      chrome.storage.sync.get({
+        voice: 'cs-CZ-Wavenet-A',
+        speed: 1
+      }, (items) => {
+        voiceSelect.value = items.voice;
+        speedSlider.value = items.speed;
+        speedValue.textContent = `${parseFloat(items.speed).toFixed(2)}x`;
+      });
     }
+  
     function saveSettings() {
-        chrome.storage.sync.set({ voice: voiceSelect.value, speed: speedSlider.value }, () => {
-            statusMessage.textContent = 'Сохранено!';
-            setTimeout(() => { statusMessage.textContent = ''; }, 1500);
-        });
+      chrome.storage.sync.set({
+        voice: voiceSelect.value,
+        speed: speedSlider.value
+      }, () => {
+        statusMessage.textContent = 'Сохранено!';
+        setTimeout(() => {
+          statusMessage.textContent = '';
+        }, 1500);
+      });
     }
-
-    // --- Слушатели событий ---
+  
     speedSlider.addEventListener('input', () => {
-        speedValue.textContent = `${parseFloat(speedSlider.value).toFixed(2)}x`;
+      speedValue.textContent = `${parseFloat(speedSlider.value).toFixed(2)}x`;
     });
+  
     saveButton.addEventListener('click', saveSettings);
-    
-    // Слушатель для кнопки Стоп
+  
     stopButton.addEventListener('click', () => {
-        // Отправляем команду фоновому скрипту
-        chrome.runtime.sendMessage({ type: 'stop-audio' });
+      chrome.runtime.sendMessage({ type: 'stop-audio' });
     });
-    
-    // --- Инициализация ---
+  
     loadSettings();
     displayDictionary();
-});
+  });

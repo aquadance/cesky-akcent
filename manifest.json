@@ -1,13 +1,14 @@
 {
     "manifest_version": 3,
     "name": "Český Akcent",
-    "version": "1.4",
+    "version": "1.0",
     "description": "Озвучивает выделенный чешский текст и сохраняет слова в личный словарь.",
     "permissions": [
       "contextMenus",
       "scripting",
       "offscreen",
-      "storage"
+      "storage",
+      "notifications"
     ],
     "host_permissions": [
       "https://texttospeech.googleapis.com/",
@@ -24,5 +25,18 @@
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
-    }
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "<all_urls>"
+        ],
+        "js": [
+          "content.js"
+        ],
+        "css": [
+          "tooltip.css"
+        ]
+      }
+    ]
   }
