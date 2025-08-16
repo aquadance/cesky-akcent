@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Český Akcent",
-    "version": "1.3",
-    "description": "Озвучивает выделенный чешский текст, используя облачный синтезатор речи.",
+    "version": "1.4",
+    "description": "Озвучивает выделенный чешский текст и сохраняет слова в личный словарь.",
     "permissions": [
       "contextMenus",
       "scripting",
@@ -10,7 +10,8 @@
       "storage"
     ],
     "host_permissions": [
-      "https://texttospeech.googleapis.com/"
+      "https://texttospeech.googleapis.com/",
+      "https://api.mymemory.translated.net/"
     ],
     "background": {
       "service_worker": "background.js",

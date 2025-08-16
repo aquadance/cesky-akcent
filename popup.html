@@ -11,28 +11,45 @@
         <h1>Český Akcent</h1>
     </header>
 
+    <div class="tabs">
+        <button class="tab-button active" data-tab="settings">Настройки</button>
+        <button class="tab-button" data-tab="dictionary">Словарь</button>
+    </div>
+
     <main class="content">
-        <h2>Настройки</h2>
-        <div class="card">
-            <div class="setting">
-                <label for="voice-select">Голос</label>
-                <select id="voice-select">
-                    <option value="cs-CZ-Wavenet-A">Женский (премиум)</option>
-                    <option value="cs-CZ-Standard-A">Женский (стандарт)</option>
-                </select>
-            </div>
-            <hr class="divider">
-            <div class="setting">
-                <label for="speed-slider">Скорость</label>
-                <div class="slider-container">
-                    <input type="range" id="speed-slider" min="0.75" max="1.5" value="1" step="0.25">
-                    <span id="speed-value">1.00x</span>
+        <div id="settings" class="tab-content active">
+            <div class="card">
+                <div class="setting">
+                    <label for="voice-select">Голос</label>
+                    <select id="voice-select">
+                        <option value="cs-CZ-Wavenet-A">Женский (премиум)</option>
+                        <option value="cs-CZ-Standard-A">Женский (стандарт)</option>
+                    </select>
+                </div>
+                <hr class="divider">
+                <div class="setting">
+                    <label for="speed-slider">Скорость</label>
+                    <div class="slider-container">
+                        <input type="range" id="speed-slider" min="0.75" max="1.5" value="1" step="0.25">
+                        <span id="speed-value">1.00x</span>
+                    </div>
                 </div>
             </div>
+            <button id="save-button">Сохранить</button>
+            <div id="status-message"></div>
         </div>
-        <button id="save-button">Сохранить</button>
-        <div id="status-message"></div>
+
+        <div id="dictionary" class="tab-content">
+            <div class="card" id="dictionary-card">
+                <div id="dictionary-content">
+                    </div>
+            </div>
+        </div>
     </main>
+
+    <footer>
+        <a href="https://www.flaticon.com/free-icons/czech-republic" title="czech republic icons" target="_blank">Czech republic icons created by Freepik - Flaticon</a>
+    </footer>
 
     <script src="popup.js"></script>
 </body>
